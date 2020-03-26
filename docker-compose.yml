@@ -1,0 +1,30 @@
+version: "3.4"
+
+services:
+  gkeuser:
+    image: kunal94vverma:gkeuser
+    ports:
+      - "1111:8080"
+    build:
+      context: .
+      dockerfile: user/Dockerfile
+
+  gkeorder:
+    image: kunal94vverma:gkeorder
+    ports:
+      - "2222:8080"
+    build:
+      context: .
+      dockerfile: order/Dockerfile
+
+  gkeorderdetail:
+    image: kunal94vverma:gkeorderdetail
+    environment:
+      - usersvc=host.docker.internal:1111
+      - ordersvc=host.docker.internal:2222
+      - version=v1
+    ports:
+      - "3333:8080"
+    build:
+      context: .
+      dockerfile: orderdetail/Dockerfile
